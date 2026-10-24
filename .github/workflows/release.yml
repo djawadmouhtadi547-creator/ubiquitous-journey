@@ -1,0 +1,37 @@
+name: NOVA Client Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Configure Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+      - name: Build and test before release
+        shell: bash
+        run: ./gradlew -Pmod_version="${GITHUB_REF_NAME#v}" --no-daemon clean build
+      - name: Verify release JAR exists
+        shell: bash
+        run: test -n "$(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-sources.jar' -print -quit)"
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          JAR="$(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-sources.jar' -print -quit)"
+          if [ -z "$JAR" ]; then echo 'No built mod JAR found.' >&2; exit 1; fi
+          gh release create "$GITHUB_REF_NAME" "$JAR" --title "$GITHUB_REF_NAME" --generate-notes

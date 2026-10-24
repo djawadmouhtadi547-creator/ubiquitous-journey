@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "nova_client",
+  "version": "${version}",
+  "name": "NOVA Client",
+  "description": "A free, modular Minecraft 1.20.1 client with configurable HUD and reversible performance profiles.",
+  "authors": ["NOVA Client contributors"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.novaclient.NovaClient"]
+  },
+  "mixins": [
+    "nova_client.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": "1.20.1",
+    "java": ">=17",
+    "fabric-api": "*"
+  }
+}

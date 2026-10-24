@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.novaclient.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "nova_client-refmap.json",
+  "client": [
+    "GameRendererMixin",
+    "LightmapTextureManagerMixin",
+    "MouseMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "key.category.nova_client": "NOVA Client",
+  "key.nova_client.open_menu": "Open NOVA Client",
+  "key.nova_client.module.fullbright": "Toggle NOVA Fullbright",
+  "key.nova_client.module.zoom": "Toggle NOVA Zoom",
+  "key.nova_client.module.toggle_sprint": "Toggle NOVA Sprint",
+  "module.nova_client.fullbright": "Fullbright",
+  "module.nova_client.zoom": "Zoom",
+  "module.nova_client.toggle_sprint": "Toggle Sprint",
+  "key.nova_client.module.dynamic_fps": "Toggle NOVA Dynamic FPS",
+  "module.nova_client.dynamic_fps": "Dynamic FPS",
+  "hud.nova_client.frametime": "Frame Time"
+}

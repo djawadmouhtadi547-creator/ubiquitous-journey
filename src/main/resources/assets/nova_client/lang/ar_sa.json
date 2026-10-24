@@ -1,0 +1,13 @@
+{
+  "key.category.nova_client": "عميل نوفا",
+  "key.nova_client.open_menu": "فتح واجهة نوفا",
+  "key.nova_client.module.fullbright": "تبديل الإضاءة الكاملة من نوفا",
+  "key.nova_client.module.zoom": "تبديل التقريب من نوفا",
+  "key.nova_client.module.toggle_sprint": "تبديل الركض من نوفا",
+  "module.nova_client.fullbright": "إضاءة كاملة",
+  "module.nova_client.zoom": "تقريب",
+  "module.nova_client.toggle_sprint": "تبديل الركض",
+  "key.nova_client.module.dynamic_fps": "تبديل معدل الإطارات الديناميكي",
+  "module.nova_client.dynamic_fps": "معدل الإطارات الديناميكي",
+  "hud.nova_client.frametime": "زمن الإطار"
+}
