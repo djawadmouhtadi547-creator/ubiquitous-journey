@@ -63,7 +63,7 @@ public final class HudRenderer {
         trimClicks(LEFT_CLICKS, now);
         trimClicks(RIGHT_CLICKS, now);
         CACHED_LINES.clear();
-        CACHED_LINES.put("fps", List.of("FPS  " + MinecraftClient.getCurrentFps()));
+        CACHED_LINES.put("fps", List.of("FPS  " + (client == null ? 0 : client.getCurrentFps())));
         if (frameTimeCount > 0) {
             double[] sorted = new double[frameTimeCount];
             System.arraycopy(FRAME_TIME_SAMPLES, 0, sorted, 0, frameTimeCount);

@@ -1,4 +1,3 @@
-
 name: Build NOVA Client
 
 on:
@@ -13,35 +12,27 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out source
         uses: actions/checkout@v4
-
       - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
-
       - name: Configure Gradle cache
         uses: gradle/actions/setup-gradle@v4
-
       - name: Build and test
         run: ./gradlew --no-daemon clean build
-
       - name: Verify Mixin resources in built JAR
         shell: bash
         run: |
-          set -euo pipefail
           JAR="$(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-sources.jar' -print -quit)"
           test -n "$JAR"
           jar tf "$JAR" | grep -Fx 'nova_client.mixins.json'
           jar tf "$JAR" | grep -Fx 'nova_client-refmap.json'
-
       - name: Upload JAR artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -51,7 +42,6 @@ jobs:
             !build/libs/*-sources.jar
           if-no-files-found: error
           retention-days: 14
-
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -60,4 +50,3 @@ jobs:
           path: build/reports/tests/test/
           if-no-files-found: ignore
           retention-days: 7
-

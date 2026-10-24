@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.0] - 2026-10-24
+
+- Fix Fabric/Yarn 1.20.1 keybind API usage by reading the bound-key translation key.
+- Fix Dynamic FPS focus detection to use MinecraftClient.isWindowFocused().
+- Fix FPS HUD compilation by reading the current FPS from the MinecraftClient instance.
+- Make the Gradle wrapper executable in both CI build and release workflows.
+- Keep automated verification for the Mixin configuration and generated refmap resources.
+
+
 ## 1.2.0
 - Fixed Mixin refmap build configuration and pinned the expected `nova_client-refmap.json` name.
 - Added Target HUD widget for the entity under the crosshair, including health for living entities.

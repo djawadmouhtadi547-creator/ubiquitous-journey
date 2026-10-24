@@ -32,7 +32,8 @@ public final class KeybindManager {
 
     public int keyCode(String id) {
         KeyBinding key = id.equals("menu") ? openMenu : modules.get(id);
-        return key == null ? GLFW.GLFW_KEY_UNKNOWN : key.getBoundKey().getCode();
+        return key == null ? GLFW.GLFW_KEY_UNKNOWN
+                : InputUtil.fromTranslationKey(key.getBoundKeyTranslationKey()).getCode();
     }
 
     public void setKeyCode(String id, int keyCode, NovaConfig config) {
@@ -53,16 +54,16 @@ public final class KeybindManager {
     public boolean hasConflict(String id) {
         int target = keyCode(id);
         if (target < 0) return false;
-        int matches = openMenu.getBoundKey().getCode() == target ? 1 : 0;
-        for (KeyBinding binding : modules.values()) {
-            if (binding.getBoundKey().getCode() == target) matches++;
+        int matches = keyCode("menu") == target ? 1 : 0;
+        for (Map.Entry<String, KeyBinding> entry : modules.entrySet()) {
+            if (keyCode(entry.getKey()) == target) matches++;
         }
         return matches > 1;
     }
 
     public void writeTo(NovaConfig config) {
-        config.keybinds.put("menu", openMenu.getBoundKey().getCode());
-        modules.forEach((id, key) -> config.keybinds.put(id, key.getBoundKey().getCode()));
+        config.keybinds.put("menu", keyCode("menu"));
+        modules.keySet().forEach(id -> config.keybinds.put(id, keyCode(id)));
     }
 
     public void clearPendingPresses() {
