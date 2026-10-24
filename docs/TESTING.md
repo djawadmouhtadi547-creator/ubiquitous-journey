@@ -26,3 +26,13 @@ No manual game launch or screenshot capture is claimed by this repository scaffo
 - Enable Dynamic FPS, alt-tab to another window and verify the game cap changes to 30; focus the game again and verify the prior cap returns. Disable it while unfocused and verify restoration.
 - Enable the Frame Time HUD widget and watch average / p95 values settle after several frames.
 - Confirm NOVA does not display a fake DLSS toggle; performance notes distinguish vanilla option tuning from renderer-level upscaling.
+
+
+## Version 1.2.0 validation checklist
+
+- Build with `gradlew.bat --no-daemon clean build` on Java 17.
+- Inspect the built JAR and confirm it contains both `nova_client.mixins.json` and `nova_client-refmap.json`.
+- Launch Minecraft 1.20.1 with Fabric API and confirm the startup log has no `Reference map ... could not be read` warning for NOVA.
+- Enable Zoom and verify its configured FOV; disable Zoom and ensure vanilla FOV is restored.
+- Enable Target HUD, aim at a living entity, and confirm name/health update; look away and confirm it shows an empty target.
+- Enable Low Health Warning in a safe test world and confirm one warning at 3 hearts or lower, with no repeated spam until health recovers to 4 hearts.

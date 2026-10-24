@@ -1,52 +1,44 @@
-
-name: Release NOVA Client
+name: NOVA Client Release
 
 on:
   push:
     tags:
-      - 'v*'
-  workflow_dispatch:
+      - 'v*.*.*'
 
 permissions:
   contents: write
 
 jobs:
-  build-and-release:
-    name: Build and publish release
+  release:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Check out source
         uses: actions/checkout@v4
-
       - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-          cache: gradle
-
-      - name: Ensure Gradle wrapper is executable
-        run: chmod +x ./gradlew
-
-      - name: Build and run tests
-        run: ./gradlew --no-daemon clean build
-
-      - name: Find release JAR
-        id: jar
+      - name: Configure Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+      - name: Build and test before release
+        shell: bash
+        run: ./gradlew -Pmod_version="${GITHUB_REF_NAME#v}" --no-daemon clean build
+      - name: Verify Mixin resources in built JAR
         shell: bash
         run: |
-          set -euo pipefail
-          mapfile -t jars < <(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-sources.jar' | sort)
-          if [ "${#jars[@]}" -eq 0 ]; then
-            echo "No distributable JAR found in build/libs" >&2
-            exit 1
-          fi
-          printf 'jar_path=%s\n' "${jars[0]}" >> "$GITHUB_OUTPUT"
-          printf 'Selected JAR: %s\n' "${jars[0]}"
-
-      - name: Publish GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: ${{ steps.jar.outputs.jar_path }}
-          generate_release_notes: true
+          JAR="$(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-sources.jar' -print -quit)"
+          test -n "$JAR"
+          jar tf "$JAR" | grep -Fx 'nova_client.mixins.json'
+          jar tf "$JAR" | grep -Fx 'nova_client-refmap.json'
+      - name: Verify release JAR exists
+        shell: bash
+        run: test -n "$(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-sources.jar' -print -quit)"
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          JAR="$(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-sources.jar' -print -quit)"
+          if [ -z "$JAR" ]; then echo 'No built mod JAR found.' >&2; exit 1; fi
+          gh release create "$GITHUB_REF_NAME" "$JAR" --title "$GITHUB_REF_NAME" --generate-notes

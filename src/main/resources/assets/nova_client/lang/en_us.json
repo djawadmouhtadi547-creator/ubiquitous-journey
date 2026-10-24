@@ -9,5 +9,7 @@
   "module.nova_client.toggle_sprint": "Toggle Sprint",
   "key.nova_client.module.dynamic_fps": "Toggle NOVA Dynamic FPS",
   "module.nova_client.dynamic_fps": "Dynamic FPS",
+  "key.nova_client.module.low_health_warning": "Toggle NOVA Low Health Warning",
+  "module.nova_client.low_health_warning": "Low Health Warning",
   "hud.nova_client.frametime": "Frame Time"
 }

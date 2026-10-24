@@ -10,7 +10,14 @@ base {
     archivesName = project.archives_base_name
 }
 
+loom {
+    mixin {
+        defaultRefmapName = "nova_client-refmap.json"
+    }
+}
+
 repositories {
+    maven { url = "https://maven.fabricmc.net/" }
     mavenCentral()
 }
 
@@ -19,6 +26,9 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // Generates the refmap used to remap Mixin target names for the intermediary runtime.
+    annotationProcessor "net.fabricmc:sponge-mixin:0.13.4+mixin.0.8.5"
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.2'
@@ -49,4 +59,27 @@ jar {
     from('LICENSE') {
         rename { "${it}_${project.base.archivesName.get()}" }
     }
+}
+
+
+// Fail the build early if the runtime Mixin configuration or generated refmap is absent.
+tasks.register('verifyMixinResources') {
+    dependsOn tasks.named('jar')
+    doLast {
+        def archive = tasks.named('jar').get().archiveFile.get().asFile
+        if (!archive.isFile()) {
+            throw new GradleException("Expected JAR was not created: ${archive}")
+        }
+        new java.util.zip.ZipFile(archive).withCloseable { zip ->
+            ['nova_client.mixins.json', 'nova_client-refmap.json'].each { resource ->
+                if (zip.getEntry(resource) == null) {
+                    throw new GradleException("Missing required Mixin resource '${resource}' in ${archive.name}")
+                }
+            }
+        }
+    }
+}
+
+tasks.named('build') {
+    dependsOn tasks.named('verifyMixinResources')
 }

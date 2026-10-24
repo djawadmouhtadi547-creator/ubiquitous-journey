@@ -5,7 +5,10 @@ import com.novaclient.config.HudElementConfig;
 import com.novaclient.config.NovaConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -60,7 +63,7 @@ public final class HudRenderer {
         trimClicks(LEFT_CLICKS, now);
         trimClicks(RIGHT_CLICKS, now);
         CACHED_LINES.clear();
-        CACHED_LINES.put("fps", List.of("FPS  " + MinecraftClient.getInstance().getCurrentFps()));
+        CACHED_LINES.put("fps", List.of("FPS  " + MinecraftClient.getCurrentFps()));
         if (frameTimeCount > 0) {
             double[] sorted = new double[frameTimeCount];
             System.arraycopy(FRAME_TIME_SAMPLES, 0, sorted, 0, frameTimeCount);
@@ -91,6 +94,7 @@ public final class HudRenderer {
             CACHED_LINES.put("speed", List.of("Speed  —"));
             CACHED_LINES.put("armor", List.of("Armor  —"));
             CACHED_LINES.put("effects", List.of("Effects  —"));
+            CACHED_LINES.put("target", List.of("Target  —"));
         } else {
             var player = client.player;
             CACHED_LINES.put("coordinates", List.of(String.format(java.util.Locale.ROOT, "XYZ  %.1f / %.1f / %.1f", player.getX(), player.getY(), player.getZ())));
@@ -128,6 +132,19 @@ public final class HudRenderer {
             }
             if (effects.isEmpty()) effects.add("Effects  None");
             CACHED_LINES.put("effects", effects);
+
+            if (client.crosshairTarget instanceof EntityHitResult hit) {
+                Entity target = hit.getEntity();
+                if (target instanceof LivingEntity living) {
+                    CACHED_LINES.put("target", List.of(
+                            "Target  " + target.getDisplayName().getString(),
+                            String.format(java.util.Locale.ROOT, "HP  %.1f / %.1f", living.getHealth(), living.getMaxHealth())));
+                } else {
+                    CACHED_LINES.put("target", List.of("Target  " + target.getDisplayName().getString()));
+                }
+            } else {
+                CACHED_LINES.put("target", List.of("Target  —"));
+            }
         }
         CACHED_LINES.put("cps", List.of("CPS  L " + LEFT_CLICKS.size() + "  R " + RIGHT_CLICKS.size()));
         CACHED_LINES.put("clock", List.of("Local time  " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))));
@@ -202,6 +219,7 @@ public final class HudRenderer {
             case "speed" -> List.of("Speed  0.00 blocks/s");
             case "memory" -> List.of("Memory  512 / 2048 MiB");
             case "frametime" -> List.of("Frame  6.94 ms avg", "95%  8.10 ms");
+            case "target" -> List.of("Target  —");
             default -> List.of(id);
         };
     }

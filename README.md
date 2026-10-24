@@ -1,14 +1,14 @@
 # NOVA Client
 
-**NOVA Client** is a free, open-source, client-side utility mod for **Minecraft Java Edition 1.20.1**, built with Fabric and Java 17. It provides a modular menu, configurable HUD widgets, local settings, and a small set of visual / quality-of-life modules.
+**NOVA Client 1.2.0** is a free, open-source, client-side utility mod for **Minecraft Java Edition 1.20.1**, built with Fabric and Java 17. It provides a modular menu, configurable HUD widgets, local settings, and a small set of visual / quality-of-life modules.
 
 > This repository is a source project. A locally tested runtime build has not been produced in every environment; use the build workflow or run the Gradle build before distributing a JAR.
 
 ## Included features
 
 - **NOVA menu** — open with **Right Shift** by default; tabs for Dashboard, Modules, HUD Editor, Performance, Settings, and About.
-- **Modular toggles** — Fullbright, Zoom, Toggle Sprint, and Dynamic FPS; each can be enabled from the UI or assigned a key.
-- **Configurable HUD** — FPS, ping, coordinates, direction, biome, keystrokes, CPS, armor durability, status effects, local clock, player status, movement speed, memory use, and frame-time average / 95th percentile.
+- **Modular toggles** — Fullbright, Zoom, Toggle Sprint, Dynamic FPS, and Low Health Warning; each can be enabled from the UI or assigned a key.
+- **Configurable HUD** — FPS, ping, coordinates, direction, biome, keystrokes, CPS, armor durability, status effects, local clock, player status, movement speed, memory use, frame-time average / 95th percentile, and a Target HUD showing the entity you are aiming at.
 - **HUD editor** — drag widgets around the screen, enable/disable them, change scale and opacity, cycle text colors, use an alignment grid, and reset positions.
 - **Local JSON settings** — defaults on first launch, basic validation, repair of missing fields, an attempt to preserve malformed files as `.broken-*`, and atomic saves.
 - **Config import/export** — Settings exports to `config/nova-client-export.json`; place a JSON file with that name there to import it from the same screen.
@@ -30,7 +30,7 @@ No account, API key, paid service, telemetry, advertising, or external client ba
 
 1. Install Minecraft Java Edition 1.20.1.
 2. Install **Fabric Loader for Minecraft 1.20.1** and launch the Fabric profile once.
-3. Download the built `nova-client-1.1.0.jar` from the GitHub Actions artifact or a GitHub Release (see below).
+3. Download the built `nova-client-1.2.0.jar` from the GitHub Actions artifact or a GitHub Release (see below).
 4. Put the mod JAR in your Minecraft `mods` directory, usually `%AppData%\.minecraft\mods` on Windows.
 5. Ensure Fabric API for 1.20.1 is also in `mods`.
 6. Launch the Fabric 1.20.1 profile. Press **Right Shift** in-game to open NOVA Client.
@@ -50,7 +50,7 @@ Do not put a `-sources.jar` in the `mods` folder; use the normal mod JAR.
 
 The repository's bootstrap scripts download the pinned official **Gradle 8.8** distribution into your user Gradle cache the first time. The first build also needs an internet connection for dependencies. The main mod JAR should be at:
 
-`build\libs\nova-client-1.1.0.jar`
+`build\libs\nova-client-1.2.0.jar`
 
 Run tests alone with `gradlew.bat test`.
 
@@ -66,7 +66,7 @@ Run tests alone with `gradlew.bat test`.
 2. Open **Actions → Build NOVA Client**.
 3. Select a successful run on your branch.
 4. In **Artifacts**, download `nova-client-<commit-sha>` and unzip it.
-5. Copy the normal `nova-client-1.1.0.jar` into the Minecraft `mods` directory.
+5. Copy the normal `nova-client-1.2.0.jar` into the Minecraft `mods` directory.
 
 Pull requests run the build too, but cannot publish a GitHub Release. Normal build artifacts are retained for 14 days under the workflow's current settings.
 
@@ -75,8 +75,8 @@ Pull requests run the build too, but cannot publish a GitHub Release. Normal bui
 After committing and pushing your source, create and push a version tag:
 
 ```sh
-git tag v1.1.0
-git push origin v1.1.0
+git tag v1.2.0
+git push origin v1.2.0
 ```
 
 The `NOVA Client Release` workflow builds and tests first. Only if successful, it creates a GitHub Release and attaches the normal mod JAR. The workflow uses the repository-provided `GITHUB_TOKEN`; no personal access token needs to be stored in the code. If using `workflow_dispatch`, note that GitHub needs a tag ref for the release workflow to have a `GITHUB_REF_NAME` suitable for a release; the intended release path is a pushed `v*.*.*` tag.
@@ -124,6 +124,13 @@ See [SECURITY.md](SECURITY.md). NOVA Client has no network client code for colle
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+## New in 1.2.0
+
+- **Mixin refmap generation** is configured in Gradle, with `sponge-mixin` as an annotation processor and the expected `nova_client-refmap.json` filename. Check the built JAR to confirm the refmap is present.
+- **Target HUD** shows the name and health of the entity under the crosshair. It is a normal editable HUD widget and can be moved, resized, or disabled.
+- **Low Health Warning** can be toggled in Modules. It shows one action-bar warning at 3 hearts or less and rearms after recovery to 4 hearts.
+- Existing user settings are preserved; the new HUD widget and module receive defaults when the config is loaded.
 
 ## Performance features (1.1.0)
 

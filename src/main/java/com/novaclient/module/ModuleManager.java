@@ -17,6 +17,7 @@ public final class ModuleManager {
         register(new ZoomModule());
         register(new ToggleSprintModule());
         register(new DynamicFpsModule());
+        register(new LowHealthWarningModule());
     }
 
     private void register(FeatureModule module) {

@@ -1,11 +1,10 @@
 # Changelog
 
-## 1.1.0 build fixes
-
-- Fixed keybind-manager compilation for Yarn 1.20.1 by tracking NOVA key codes explicitly instead of calling the unavailable `KeyBinding.getBoundKey()` method.
-- Fixed Dynamic FPS focus detection using GLFW window attributes, which are available in the targeted stack.
-- Fixed the FPS HUD to call `getCurrentFps()` on the Minecraft client instance.
-- Kept `chmod +x ./gradlew` in the CI workflows so Linux runners can invoke the project bootstrap script.
+## 1.2.0
+- Fixed Mixin refmap build configuration and pinned the expected `nova_client-refmap.json` name.
+- Added Target HUD widget for the entity under the crosshair, including health for living entities.
+- Added optional Low Health Warning module with an action-bar alert and a recovery-based reset to prevent spam.
+- Updated in-game version labels, README, tests, and release notes for 1.2.0.
 
 ## 1.1.0
 - Added a reversible MAX FPS preset and a Balanced performance preset.

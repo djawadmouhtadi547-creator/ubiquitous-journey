@@ -9,5 +9,7 @@
   "module.nova_client.toggle_sprint": "تبديل الركض",
   "key.nova_client.module.dynamic_fps": "تبديل معدل الإطارات الديناميكي",
   "module.nova_client.dynamic_fps": "معدل الإطارات الديناميكي",
-  "hud.nova_client.frametime": "زمن الإطار"
+  "hud.nova_client.frametime": "زمن الإطار",
+  "key.nova_client.module.low_health_warning": "تفعيل تحذير الصحة المنخفضة",
+  "module.nova_client.low_health_warning": "تحذير الصحة المنخفضة"
 }

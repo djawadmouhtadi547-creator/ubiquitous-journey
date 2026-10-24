@@ -36,6 +36,8 @@ class HudElementConfigTest {
         assertNotNull(config.hud.get("fps"));
         assertNotNull(config.hud.get("keystrokes"));
         assertNotNull(config.hud.get("armor"));
+        assertNotNull(config.hud.get("target"));
         assertTrue(config.moduleEnabled.containsKey("zoom"));
+        assertTrue(config.moduleEnabled.containsKey("low_health_warning"));
     }
 }

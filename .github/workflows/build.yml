@@ -1,55 +1,37 @@
-
 name: Build NOVA Client
 
 on:
   push:
     branches: [main, master]
   pull_request:
-    branches: [main, master]
   workflow_dispatch:
 
 permissions:
   contents: read
 
-concurrency:
-  group: nova-build-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   build:
-    name: Build Minecraft 1.20.1 Client
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Check out source
         uses: actions/checkout@v4
-
       - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-          cache: gradle
-
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
-
-      - name: Validate Gradle wrapper files
-        run: |
-          test -f ./gradlew
-          test -f ./gradle/wrapper/gradle-wrapper.properties
-
-      - name: Build and run tests
+      - name: Configure Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+      - name: Build and test
         run: ./gradlew --no-daemon clean build
-
-      - name: List build outputs
-        if: always()
+      - name: Verify Mixin resources in built JAR
+        shell: bash
         run: |
-          echo "Build outputs:"
-          find . -type f -path '*/build/libs/*' -print || true
-
-      - name: Upload JAR artifact
-        if: success()
+          JAR="$(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-sources.jar' -print -quit)"
+          test -n "$JAR"
+          jar tf "$JAR" | grep -Fx 'nova_client.mixins.json'
+          jar tf "$JAR" | grep -Fx 'nova_client-refmap.json'
+      - name: Upload JAR artifacts
         uses: actions/upload-artifact@v4
         with:
           name: nova-client-${{ github.sha }}
@@ -58,12 +40,11 @@ jobs:
             !build/libs/*-sources.jar
           if-no-files-found: error
           retention-days: 14
-
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-reports-${{ github.sha }}
-          path: build/reports/tests/
+          name: nova-client-test-reports-${{ github.run_id }}
+          path: build/reports/tests/test/
           if-no-files-found: ignore
           retention-days: 7

@@ -27,6 +27,7 @@ public class NovaConfig {
         config.moduleEnabled.put("zoom", false);
         config.moduleEnabled.put("toggle_sprint", false);
         config.moduleEnabled.put("dynamic_fps", false);
+        config.moduleEnabled.put("low_health_warning", false);
         config.hud.put("fps", new HudElementConfig(0.02f, 0.03f));
         config.hud.put("ping", new HudElementConfig(0.02f, 0.10f));
         config.hud.put("coordinates", new HudElementConfig(0.02f, 0.17f));
@@ -41,6 +42,7 @@ public class NovaConfig {
         config.hud.put("speed", new HudElementConfig(0.76f, 0.17f));
         config.hud.put("memory", new HudElementConfig(0.76f, 0.24f));
         config.hud.put("frametime", new HudElementConfig(0.76f, 0.31f));
+        config.hud.put("target", new HudElementConfig(0.40f, 0.78f));
         return config;
     }
 

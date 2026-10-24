@@ -61,7 +61,7 @@ public final class NovaScreen extends Screen {
         context.fill(x, y + h - 1, x + w, y + h, 0xFF2A3040);
         context.fill(x, y + 3, x + w, y + 54, 0xFF191E29);
         context.drawTextWithShadow(textRenderer, "NOVA", x + 20, y + 17, accent);
-        context.drawTextWithShadow(textRenderer, "CLIENT  /  1.1.0", x + 75, y + 17, 0xFFBFC9D8);
+        context.drawTextWithShadow(textRenderer, "CLIENT  /  1.2.0", x + 75, y + 17, 0xFFBFC9D8);
         context.drawTextWithShadow(textRenderer, "MINECRAFT 1.20.1", x + w - 164, y + 17, 0xFF8995A8);
         drawButton(context, x + w - 34, y + 12, 22, 22, "×", 0xFF293140, 0xFFFFFFFF);
 
@@ -216,7 +216,7 @@ public final class NovaScreen extends Screen {
     private void renderAbout(DrawContext ctx, int x, int y, int w, int h) {
         ctx.drawTextWithShadow(textRenderer, "About NOVA Client", x, y, 0xFFFFFFFF);
         ctx.drawTextWithShadow(textRenderer, "A free, local-first Fabric client utility for Minecraft Java 1.20.1.", x, y + 18, 0xFF98A5B8);
-        card(ctx, x, y + 52, w, 90, "PROJECT", "Version 1.1.0  •  Fabric Loader  •  Java 17", "MIT licensed. No account, telemetry, ads, or paid API.", accentColor());
+        card(ctx, x, y + 52, w, 90, "PROJECT", "Version 1.2.0  •  Fabric Loader  •  Java 17", "MIT licensed. No account, telemetry, ads, or paid API.", accentColor());
         ctx.drawTextWithShadow(textRenderer, "Implemented: Fullbright, Zoom, Toggle Sprint, configurable HUD,", x, y + 166, 0xFFD7DEEA);
         ctx.drawTextWithShadow(textRenderer, "keybind editor, frame-time monitor, performance profiles, local config and CI.", x, y + 182, 0xFFD7DEEA);
         ctx.drawTextWithShadow(textRenderer, "Repository / issue tracker: add your published GitHub URL in README.md.", x, y + 218, 0xFF98A5B8);
