@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0 build fixes
+
+- Fixed keybind-manager compilation for Yarn 1.20.1 by tracking NOVA key codes explicitly instead of calling the unavailable `KeyBinding.getBoundKey()` method.
+- Fixed Dynamic FPS focus detection using GLFW window attributes, which are available in the targeted stack.
+- Fixed the FPS HUD to call `getCurrentFps()` on the Minecraft client instance.
+- Kept `chmod +x ./gradlew` in the CI workflows so Linux runners can invoke the project bootstrap script.
+
 ## 1.1.0
 - Added a reversible MAX FPS preset and a Balanced performance preset.
 - Added a frame-time HUD widget with rolling average and 95th-percentile samples.

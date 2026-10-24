@@ -15,7 +15,9 @@ public final class DynamicFpsModule extends FeatureModule {
     @Override
     public void tick(MinecraftClient client) {
         if (!isEnabled() || client == null || client.options == null || client.getWindow() == null) return;
-        boolean focused = client.getWindow().isFocused();
+        long handle = client.getWindow().getHandle();
+        if (handle == 0L) return;
+        boolean focused = GLFW.glfwGetWindowAttrib(handle, GLFW.GLFW_FOCUSED) == GLFW.GLFW_TRUE;
         if (!focused && !capped) {
             previousMaxFps = client.options.getMaxFps().getValue();
             if (previousMaxFps != 30) client.options.getMaxFps().setValue(30);
